@@ -1,0 +1,30 @@
+---
+// Zigzag + running stitch border, sewn from the centre out to both sides.
+import { zigzag } from "../lib/stitch";
+
+interface Props {
+  id: string;
+}
+const { id } = Astro.props;
+const right = zigzag(1);
+const left = zigzag(-1);
+const strands = [
+  { d: right.d, len: right.len, delay: 0 },
+  { d: left.d, len: left.len, delay: 0 },
+  { d: "M500,21 L1000,21", len: 502, delay: 0.05 },
+  { d: "M500,21 L0,21", len: 502, delay: 0.05 },
+];
+---
+
+<svg class="border" viewBox="0 0 1000 26" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    {
+      strands.map((s, i) => (
+        <mask id={`${id}-${i}`} maskUnits="userSpaceOnUse" x="-50" y="-50" width="1100" height="130">
+          <path d={s.d} class="reveal" style={`--len:${s.len};--d:${s.delay}s;--dur:.7s`} />
+        </mask>
+      ))
+    }
+  </defs>
+  {strands.map((s, i) => <path d={s.d} class="thread" mask={`url(#${id}-${i})`} />)}
+</svg>

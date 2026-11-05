@@ -1,0 +1,65 @@
+---
+// Portrait framed by a stitched ring of tulips and cross-stitches.
+// The photo is a real <img> (AVIF/WebP/JPG, 160 + 320 px) under an SVG
+// overlay, so it can be the LCP element and load at high priority.
+import { Picture } from "astro:assets";
+import photo from "../assets/jakub.jpg";
+import { WREATH, WREATH_TULIP, WREATH_TULIP_INNER, wreathMotifs } from "../lib/stitch";
+
+interface Props {
+  alt: string;
+}
+const { alt } = Astro.props;
+const { C, R, T0, DUR } = WREATH;
+const half = Math.ceil(Math.PI * R) + 2;
+const arcs = [
+  `M${C},${C - R} A${R},${R} 0 0 0 ${C},${C + R}`,
+  `M${C},${C - R} A${R},${R} 0 0 1 ${C},${C + R}`,
+];
+const motifs = wreathMotifs();
+---
+
+<div class="wreath">
+  <Picture
+    src={photo}
+    alt={alt}
+    widths={[160, 320]}
+    sizes="(max-width: 759px) 160px, 160px"
+    formats={["avif", "webp"]}
+    fallbackFormat="jpg"
+    width={320}
+    height={320}
+    quality={70}
+    loading="eager"
+    fetchpriority="high"
+    class="portrait"
+  />
+  <svg viewBox="0 0 260 260" aria-hidden="true">
+    <defs>
+      {
+        arcs.map((d, i) => (
+          <mask id={`wr-${i}`} maskUnits="userSpaceOnUse" x="-50" y="-50" width="360" height="360">
+            <path d={d} class="reveal" style={`--len:${half};--d:${T0}s;--dur:${DUR}s`} />
+          </mask>
+        ))
+      }
+    </defs>
+    {arcs.map((d, i) => <path d={d} class="thread" mask={`url(#wr-${i})`} />)}
+    {
+      motifs.map((m) => (
+        <g transform={`translate(${m.x},${m.y}) rotate(${m.deg})`}>
+          <g class="pop" style={`--d:${m.delay}s`}>
+            {m.tulip ? (
+              <>
+                <path d={WREATH_TULIP} class="tulip" transform="scale(.72)" />
+                <path d={WREATH_TULIP_INNER} class="tulip" transform="scale(.72)" />
+              </>
+            ) : (
+              <path d="M-5,-5 L5,5 M5,-5 L-5,5" class="tulip" transform="translate(0,-2)" />
+            )}
+          </g>
+        </g>
+      ))
+    }
+  </svg>
+</div>

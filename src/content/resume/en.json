@@ -1,0 +1,45 @@
+{
+  "name": "Jakub Slatinský",
+  "role": "Senior Frontend Engineer",
+  "roleNote": "open to fullstack",
+  "summary": "9+ years of React and TypeScript, mostly in fintech. I solve hard problems, build what customers need and keep code maintainable. I want to help a team adopt AI.",
+  "location": "Brno · hybrid or remote",
+  "email": "jakub.slatinsky@gmail.com",
+  "phone": "+420 775 210 796",
+  "github": "SlatinskyJ",
+  "website": "jakub.slatinsky.cz",
+  "experience": [
+    { "years": "2024 – 2026", "company": "CMG, via Oak's Lab", "title": "Senior React Engineer", "line": "Frontend for a US capital markets platform.", "motif": "tulip" },
+    { "years": "2023 – 2024", "company": "Notino", "title": "Software Developer", "line": "Rebuilt the internal finance system.", "motif": "rosette" },
+    { "years": "2020 – 2022", "company": "3Pillar Global", "title": "Software Developer", "line": "Web platform for clinical trials.", "motif": "heart" },
+    { "years": "2019 – 2020", "company": "Adacta", "title": "Software Developer", "line": "Insurance platform in C# / .NET.", "motif": "tulip" },
+    { "years": "2017 – 2019", "company": "Leveris", "title": "Frontend Developer", "line": "Web interface of a digital bank.", "motif": "rosette" },
+    { "years": "2017", "company": "IBM", "title": "Intern", "line": "Cloud proof of concept for indoor tracking.", "motif": "sprig" }
+  ],
+  "skills": [
+    { "group": "Frontend", "items": ["React", "TypeScript", "Next.js", "Apollo / GraphQL", "React Query", "MUI", "Tailwind", "Storybook"] },
+    { "group": "Quality", "items": ["Playwright", "Jest", "Testing Library", "Nx", "CI/CD", "Grafana"] },
+    { "group": "AI", "items": ["Claude Code", "Agent workflows", "MCP"] }
+  ],
+  "projects": [
+    { "name": "AI-run personal workflow", "text": "Self-hosted Obsidian vault connected to Claude over MCP. Agents file notes, track projects and send a morning brief.", "href": "/ai-setup/", "linkLabel": "How it works", "printLink": "jakub.slatinsky.cz/ai-setup", "featured": true },
+    { "name": "This website", "text": "Astro, near-zero JavaScript, PDF generated on deploy.", "href": "https://github.com/SlatinskyJ/resume", "linkLabel": "Source on GitHub", "printLink": "github.com/SlatinskyJ/resume" },
+    { "name": "Drozdi", "text": "Site for the Moravian cimbalom band I co-founded.", "href": "https://www.cmdrozdi.cz/", "linkLabel": "cmdrozdi.cz", "printLink": "cmdrozdi.cz" }
+  ],
+  "languages": [
+    { "name": "Czech", "level": "native" },
+    { "name": "English", "level": "B2+, daily at work" },
+    { "name": "German", "level": "A2" }
+  ],
+  "education": [
+    { "school": "Masaryk University, FI", "years": "2016 – 17", "detail": "Informatics, not completed" },
+    { "school": "Gymnázium Kpt. Jaroše", "years": "2012 – 16", "detail": "Maths and physics track" }
+  ],
+  "outsideWork": "Outside work I organise a summer camp for kids, play violin in Drozdi, 3D print and enjoy logic puzzles.",
+  "ui": {
+    "nav": { "resume": "Resume", "ai": "AI workflow", "pdf": "PDF" },
+    "sections": { "experience": "Experience", "skills": "Skills", "projects": "Projects", "languages": "Languages", "education": "Education" },
+    "downloadPdf": "Download PDF",
+    "portraitAlt": "Portrait of Jakub in a red kroj vest, framed by a stitched wreath of tulips"
+  }
+}

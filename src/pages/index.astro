@@ -1,0 +1,134 @@
+---
+import { getEntry } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Wreath from "../components/Wreath.astro";
+import { MARKERS } from "../lib/stitch";
+
+const entry = await getEntry("resume", "en");
+if (!entry) throw new Error("Missing resume content: src/content/resume/en.json");
+const r = entry.data;
+const s = r.ui.sections;
+---
+
+<Base
+  title={`${r.name} · ${r.role}`}
+  description={r.summary}
+  active="resume"
+  nav={r.ui.nav}
+  name={r.name}
+  intro
+>
+  <div class="layout">
+    <aside class="hero">
+      <Wreath alt={r.ui.portraitAlt} />
+      <div class="txt">
+        <h1>{r.name}</h1>
+        <p class="role">{r.role}<br />{r.roleNote}</p>
+        <p class="sum">{r.summary}</p>
+      </div>
+      <div class="contact">
+        <span>{r.location}</span>
+        <a href={`mailto:${r.email}`}>{r.email}</a>
+        <a href={`https://github.com/${r.github}`}>github.com/{r.github}</a>
+        <span class="print-only">{r.phone}</span>
+        <span class="print-only">{r.website}</span>
+      </div>
+      <a class="pdf" href="/resume.pdf" download>↓ {r.ui.downloadPdf}</a>
+    </aside>
+
+    <div class="main" id="main">
+      <section>
+        <h2 class="gi">{s.experience}</h2>
+        <ol class="tl">
+          {
+            r.experience.map((e) => (
+              <li>
+                <span class="yr gi">{e.years}</span>
+                <svg class="x" viewBox="0 0 22 22" aria-hidden="true">
+                  <path class="tulip" d={MARKERS[e.motif]} />
+                </svg>
+                <div class="gi">
+                  <strong>{e.company}</strong>
+                  <small>
+                    {e.title}. {e.line}
+                  </small>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </section>
+
+      <section>
+        <h2 class="gi">{s.skills}</h2>
+        <dl class="skills">
+          {
+            r.skills.map((g) => (
+              <div>
+                <dt class="gi">{g.group}</dt>
+                <dd class="chips">
+                  {g.items.map((i) => (
+                    <span class="gi">{i}</span>
+                  ))}
+                </dd>
+              </div>
+            ))
+          }
+        </dl>
+      </section>
+
+      <section>
+        <h2 class="gi">{s.projects}</h2>
+        <div class="projects">
+          {
+            r.projects.map((p) => (
+              <article class:list={["proj", "gi", { feature: p.featured }]}>
+                <h3>{p.name}</h3>
+                <p>{p.text}</p>
+                <a class="screen-only" href={p.href}>
+                  {p.linkLabel} →
+                </a>
+                <span class="print-only plink">{p.printLink}</span>
+              </article>
+            ))
+          }
+        </div>
+      </section>
+
+      <section class="two">
+        <div>
+          <h2 class="gi">{s.languages}</h2>
+          <ul>
+            {
+              r.languages.map((l) => (
+                <li class="gi">
+                  {l.name} <span>· {l.level}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div>
+          <h2 class="gi">{s.education}</h2>
+          <ul>
+            {
+              r.education.map((e) => (
+                <li class="gi">
+                  {e.school} <span>· {e.years}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
+  <footer class="foot">
+    <p>{r.outsideWork}</p>
+  </footer>
+</Base>
+
+<script>
+  import { grow } from "../scripts/grow";
+  grow();
+</script>
