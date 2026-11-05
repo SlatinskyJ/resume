@@ -1,0 +1,75 @@
+---
+import "../styles/site.css";
+import Border from "../components/Border.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  active: "resume" | "ai";
+  nav: { resume: string; ai: string; pdf: string };
+  name: string;
+  /** Run the stitched intro on this page (home only). */
+  intro?: boolean;
+}
+const { title, description, active, nav, name, intro = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4eee2" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1c1d26" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/fonts/bricolage-800.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/literata-400.woff2" as="font" type="font/woff2" crossorigin />
+    {
+      intro && (
+        <script is:inline>
+          // Decide before first paint whether the intro plays. Only then are
+          // items hidden, so without JS (or on a repeat visit) all content shows.
+          (function () {
+            var d = document.documentElement;
+            try {
+              if (matchMedia("(prefers-reduced-motion: reduce)").matches || matchMedia("print").matches) return;
+              if (sessionStorage.getItem("sewn")) return;
+              sessionStorage.setItem("sewn", "1");
+            } catch (e) {
+              return;
+            }
+            d.classList.add("play");
+            // Safety net: if the grow script never runs, show everything.
+            setTimeout(function () {
+              if (!d.classList.contains("grown")) d.classList.remove("play");
+            }, 4000);
+          })();
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <div class="site">
+      <Border id="bt" />
+      <nav class="nav" aria-label="Main">
+        <a class="me" href="/">{name}</a>
+        <span>
+          <a href="/" class:list={[{ on: active === "resume" }, "navl"]} aria-current={active === "resume" ? "page" : undefined}>{nav.resume}</a>
+          <a href="/ai-setup/" class:list={[{ on: active === "ai" }, "navl"]} aria-current={active === "ai" ? "page" : undefined}>{nav.ai}</a>
+          <a href="/resume.pdf" class="pdfl" download>{nav.pdf}</a>
+        </span>
+      </nav>
+      <slot />
+      <Border id="bb" />
+    </div>
+  </body>
+</html>

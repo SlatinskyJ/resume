@@ -1,0 +1,88 @@
+---
+import { getEntry } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Wreath from "../components/Wreath.astro";
+
+const entry = await getEntry("resume", "en");
+if (!entry) throw new Error("Missing resume content");
+const r = entry.data;
+const title = "My AI-run personal workflow";
+const lead =
+  "A self-hosted Obsidian vault that Claude can read and write from any device. AI agents keep my notes, projects, invoices and daily plan in order, and I review what they do.";
+---
+
+<Base title={`${title} · ${r.name}`} description={lead} active="ai" nav={r.ui.nav} name={r.name}>
+  <main class="article">
+    <a class="back" href="/">← {r.ui.nav.resume}</a>
+    <header>
+      <Wreath alt={r.ui.portraitAlt} />
+      <h1>{title}</h1>
+    </header>
+    <p class="lead">{lead}</p>
+
+    <h2>Why I built it</h2>
+    <p>
+      I wanted one place for everything: work notes, home maintenance, my band, invoicing for gigs. I also wanted an
+      assistant that acts on it, not just chats about it. Most AI tools forget everything between sessions. Giving the
+      agent a durable, structured record fixes that.
+    </p>
+
+    <h2>How it fits together</h2>
+    <ol class="steps">
+      <li>
+        <strong>The vault.</strong> Plain Markdown in Obsidian, organised by the PARA method: Inbox, Projects, Areas,
+        Resources, Archive, plus daily notes and a System folder for templates, prompts and skills.
+      </li>
+      <li>
+        <strong>Home server.</strong> A small always-on Linux box runs a headless Obsidian Sync client, so the vault on
+        the server, my Mac and my phone stay identical.
+      </li>
+      <li>
+        <strong>MCP server.</strong> An open-source Model Context Protocol server on the same box exposes the vault as
+        tools: search, read, write, edit frontmatter, append to the daily note. It sits behind Tailscale and token auth.
+      </li>
+      <li>
+        <strong>Claude as the agent.</strong> The server is added as a connector, so any Claude session on phone, desktop
+        or in the cloud can work with the vault. Claude Projects give each goal, like this job search, its own space with
+        parallel threads and shared memory.
+      </li>
+      <li>
+        <strong>Skills.</strong> Written instructions that teach the agent my conventions: where each kind of note goes,
+        how to record a decision, how to issue a Czech invoice with my own CLI and a company lookup in the ARES registry.
+      </li>
+      <li>
+        <strong>Routines.</strong> A scheduled agent writes a morning brief with what is due, new mail and the day's
+        calendar. A systemd timer then pushes a short summary to my phone through a self-hosted ntfy server.
+      </li>
+    </ol>
+
+    <h2>What it does for me</h2>
+    <ul>
+      <li>Files and links notes from a one-line message, so the inbox stays near empty.</li>
+      <li>Keeps project notes current: status, next step and a dated log after every piece of work.</li>
+      <li>Issues and tracks invoices for my gigs and sums income for the tax return.</li>
+      <li>Gives me one morning push instead of checking five apps.</li>
+      <li>
+        Helped build this site: pulled exact job dates from old offer and leaving emails, drafted the copy, ran the design
+        discussion and wrote the code that I then reviewed.
+      </li>
+    </ul>
+
+    <h2>What I learned</h2>
+    <ul>
+      <li><strong>Structure beats prompts.</strong> A clear folder scheme and frontmatter do more for agent quality than clever instructions.</li>
+      <li><strong>Agents write the record.</strong> Every change ends with a dated note of what was done and why, so the next session starts with context.</li>
+      <li><strong>Humans approve the irreversible.</strong> Agents draft emails, invoices and changes freely; anything sent or deleted waits for me.</li>
+      <li><strong>Build, then drop what the platform covers.</strong> I wrote a Go + tmux workspace for running parallel coding agents, and retired it when Claude Projects solved the same pains.</li>
+    </ul>
+
+    <h2>What I can bring to a team</h2>
+    <p>
+      The same habits work for an engineering team moving to AI: shared, structured context for agents, conventions
+      written down as skills, small automations that remove routine work, and review gates where mistakes are expensive.
+      I'm happy to help a team set this up while shipping product work.
+    </p>
+
+    <p><a class="back" href="/">← {r.ui.nav.resume}</a></p>
+  </main>
+</Base>
